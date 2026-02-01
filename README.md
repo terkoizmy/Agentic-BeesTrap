@@ -1,2 +1,2 @@
 # Agentic-BeesTrap
-The AI Agent defender from MEV Predator and counter them
+The AI Agentic defender from MEV Predator and counter them
