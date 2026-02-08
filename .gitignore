@@ -42,4 +42,5 @@ test_calldata.bytes
 .vscode/
 .idea/
 *.swp
+/logs/*
 *.log
