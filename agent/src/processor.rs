@@ -9,10 +9,7 @@ use ndarray::Array2;
 use ort::session::{builder::GraphOptimizationLevel, Session};
 use std::process::Command;
 use std::str::FromStr;
-use tokio::sync::{
-    mpsc::{UnboundedReceiver, UnboundedSender},
-    Mutex,
-};
+use tokio::sync::{mpsc::UnboundedSender, Mutex};
 use tracing::{error, info, instrument};
 
 // ═══════════════════════════════════════════════════════════════════════════

@@ -56,14 +56,13 @@ async fn main() -> Result<()> {
     let client = std::sync::Arc::new(client);
 
     // 4. Spawn Indexer
-    // 4. Spawn Indexer
-    let rpc_url = config.rpc_url.clone();
+    let rpc_url = config.rpc_url.clone(); // MAINNET: Listen for traffic
     let target_address = config.pool_manager_address.clone();
     let router_address = config.universal_router_address.clone();
     let tx_sender_clone = tx_sender.clone();
     let ui_sender_clone = ui_sender.clone();
     let indexer_handle = tokio::spawn(async move {
-        spawn_mempool_listener(
+        if let Err(e) = spawn_mempool_listener(
             rpc_url,
             target_address,
             router_address,
@@ -71,12 +70,16 @@ async fn main() -> Result<()> {
             ui_sender_clone,
         )
         .await
+        {
+            tracing::error!("CRITICAL: Mempool Listener failed: {:?}", e);
+        }
     });
 
     // 5. Spawn Processor
     // Processor needs UI sender to report stats/detections
     let model_path = config.model_path.clone();
-    let rpc_url_processor = config.execution_rpc_url.clone(); // Use Execution RPC (Anvil)
+    let rpc_url_processor = config.execution_rpc_url.clone(); // UNICHAIN: Execute/Estimate
+
     let confidence_threshold = config.confidence_threshold;
 
     let processor_handle = tokio::spawn(async move {

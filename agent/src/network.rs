@@ -22,6 +22,12 @@ sol! {
     #[sol(rpc)]
     contract BeeTrapHook {
         function isPredator(address) external view returns (bool);
+        function markAsPredatorWithProof(
+            address bot,
+            bool status,
+            bytes calldata proof,
+            uint256[] calldata publicInputs
+        ) external;
     }
 }
 
@@ -61,13 +67,12 @@ where
     ) -> Result<String> {
         let proof = Bytes::from(proof_bytes);
 
-        // Call the proxy function on AgentNFT
+        // Call the BeeTrapHook directly (Bypassing AgentNFT to ensure msg.sender == AI_AGENT)
         let tx = self
-            .agent_nft
+            .beetrap_hook
             .markAsPredatorWithProof(
-                self.agent_token_id,
                 bot_address,
-                true, // status = true (mark as predator)
+                true, // status = true
                 proof,
                 public_inputs,
             )

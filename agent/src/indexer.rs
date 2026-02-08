@@ -55,6 +55,7 @@ async fn run_listener_session(
     router: Address,
 ) -> Result<()> {
     // 1. Establish WSS Connection
+    info!("Attempting to connect to WSS URL: {}", wss_url); // Log the URL!
     let ws = WsConnect::new(wss_url);
     let provider = ProviderBuilder::new().on_ws(ws).await?;
 
