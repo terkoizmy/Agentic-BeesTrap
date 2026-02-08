@@ -1,0 +1,27 @@
+# Rust target directory
+/target/
+
+# Local configuration
+.env
+*.env
+
+# Logs
+/logs/*.log
+/logs/*.log.*
+
+# BeeTrap Assets & Proof Artifacts
+# Ignore EVERYTHING in assets/
+/assets/*
+# EXCLUDE (Allow) .ipynb files
+!/assets/*.ipynb
+# (Optional: Allow settings.json if you want to commit configuration)
+/assets/settings.json
+/assets/network.ezkl
+# Temporary calldata files
+calldata_*.bytes
+
+# Dynamic Libraries
+*.so
+*.so.*
+*.dylib
+*.dll

@@ -1,0 +1,75 @@
+[package]
+name = "beetrap-sentinel"
+version = "0.1.0"
+edition = "2021"
+description = "Agentic BeeTrap - AI-Powered MEV Protection Sentinel"
+authors = ["BeeTrap Team"]
+
+[features]
+default = ["onnx"]
+onnx = []
+
+
+[dependencies]
+# ═══════════════════════════════════════════════════════════════════════════
+#                         RUNTIME & CONCURRENCY
+# ═══════════════════════════════════════════════════════════════════════════
+tokio = { version = "1", features = ["full", "sync", "macros", "rt-multi-thread"] }
+eyre = "0.6"
+color-eyre = "0.6"
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#                         BLOCKCHAIN (ALLOY STACK)
+# ═══════════════════════════════════════════════════════════════════════════
+alloy = { version = "0.8", features = [
+    "full",
+    "providers",
+    "provider-ws",
+    "network",
+    "rpc-types",
+    "contract",
+    "signer-local",
+    "k256",
+] }
+
+# ═══════════════════════════════════════════════════════════════════════════
+#                         CRYPTOGRAPHY (ERC-8004 SIGNING)
+# ═══════════════════════════════════════════════════════════════════════════
+k256 = { version = "0.13", features = ["ecdsa", "schnorr"] }
+sha3 = "0.10"
+hex = "0.4"
+
+# ═══════════════════════════════════════════════════════════════════════════
+#                         AI INFERENCE (ONNX RUNTIME)
+# ═══════════════════════════════════════════════════════════════════════════
+# Using load-dynamic to avoid glibc version mismatch (linker errors with __isoc23_*)
+# This loads libonnxruntime.so at runtime instead of statically linking
+# Requires: ONNX Runtime installed on system OR set ORT_DYLIB_PATH environment variable
+ort = { version = "2.0.0-rc.11", default-features = false, features = ["load-dynamic", "ndarray"] }
+ndarray = "0.17"
+
+# ═══════════════════════════════════════════════════════════════════════════
+#                         TUI (TERMINAL DASHBOARD)
+# ═══════════════════════════════════════════════════════════════════════════
+ratatui = "0.29"
+crossterm = { version = "0.28", features = ["event-stream"] }
+open = "5.3"
+
+# ═══════════════════════════════════════════════════════════════════════════
+#                         UTILITIES
+# ═══════════════════════════════════════════════════════════════════════════
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+dotenvy = "0.15"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing-appender = "0.2"
+futures = "0.3"
+rand = "0.8"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
