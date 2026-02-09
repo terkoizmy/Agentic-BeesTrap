@@ -2,11 +2,12 @@
 
 <div align="center">
 
-**Zero-Knowledge AI Defense Against Sandwich Attacks**
+**Zero-Knowledge AI Defense Against MEV Predator**
 
 [![Ready for Deployment](https://img.shields.io/badge/Status-Ready%20for%20Deployment-blue?style=for-the-badge)](https://github.com/terkoiz/Agentic-BeesTrap)
 [![ZK Verified](https://img.shields.io/badge/ZK%20Proof-EZKL%20Verified-00D632?style=for-the-badge)](https://ezkl.xyz)
 [![Uniswap V4](https://img.shields.io/badge/Uniswap-V4%20Hooks-FF007A?style=for-the-badge)](https://uniswap.org)
+[![Unichain](https://img.shields.io/badge/Chain-Unichain_Sepolia-FF007A?style=for-the-badge)](https://unichain-sepolia.blockscout.com/)
 [![MIT License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
 </div>
@@ -22,6 +23,7 @@
 - [Technology Stack](#technology-stack)
 - [Architecture](#architecture)
 - [Key Features](#key-features)
+- [AI Model Creation](#AI-Model-Creation)
 - [Smart Contracts](#smart-contracts)
 - [Agent NFT System](#agent-nft-system)
 - [Deployment](#deployment)
@@ -302,7 +304,7 @@ ON-CHAIN LAYER:
 
 | Layer | Technology | Purpose |
 |-------|------------|---------|
-| **Blockchain** | Ethereum, Base, Unichain | EVM-compatible L1/L2 |
+| **Blockchain** | Ethereum | EVM-compatible L1/L2 |
 | **DEX Protocol** | Uniswap V4 Hooks | Liquidity & swap execution |
 | **Smart Contracts** | Solidity 0.8.26, Foundry | On-chain logic |
 | **ZK Proofs** | EZKL (Halo2) | ML verification |
@@ -371,8 +373,44 @@ Anyone can run an agent by minting an Agent NFT. This creates a competitive mark
 ### Security Features
 
 ✅ **Access Control**: Only authorized Agent NFT holders can submit proofs.
+
 ✅ **ZK Verification**: On-chain verification of off-chain ML inferences.
+
 ✅ **Standard Compliance**: Uses ERC-721 and Uniswap V4 standard interfaces.
+
+### Deployed Contracts (Unichain Sepolia)
+
+| Contract | Address |
+|----------|---------|
+| **BeeTrapHook** | `0x66aba306aCaa902b9B36a715ECfdE2a4a9e2Dac5` |
+| **AgentNFT** | `0x0d078eca4007a5f14ad9206f0fe1b0c28fe0236b` |
+| **ValidationRegistry** | `0xb9eF3A26B4e617c7876724D88B77Fd0e5Da64517` |
+| **PoolManager** | `0x000000000004444c5dc75cB358380D2e3dE08A90` |
+
+---
+
+## 🧠 AI Model Creation
+
+The AI model powering BeeTrap is developed using **TensorFlow/Keras** and converted to a Zero-Knowledge Circuit using **EZKL**. The training pipeline (`agent/assets/Final_BeeTrap.ipynb`) involves:
+
+### 1. Data Processing
+- **Features Used (6):** `gas_price_gwei`, `priority_fee_gwei`, `gas_usage_ratio`, `gas_used`, `native_value`, `tx_index`.
+- **Normalization:** Uses `StandardScaler` to normalize inputs for numerical stability in the ZK circuit.
+
+### 2. Model Architecture
+A lightweight Multi-Layer Perceptron (MLP) optimized for on-chain verification:
+- **Input Layer:** 6 Neurons (Features)
+- **Hidden Layer 1:** 16 Neurons (ReLU)
+- **Hidden Layer 2:** 8 Neurons (ReLU)
+- **Output Layer:** 1 Neuron (Logits)
+
+### 3. ZK-ML Pipeline
+1.  **Training:** Trained on a dataset of sandwich attacks vs. normal swaps using `BinaryCrossentropy`.
+2.  **Export:** Converted to **ONNX** format (Opset 12).
+3.  **Quantization:** Calibrated using `ezkl.calibrate_settings` to ensure accuracy within the field elements.
+4.  **Proof Generation:** Compiled into a `halo2` circuit, enabling the creation of small (~180KB) proofs that certify the model's output without revealing the private inputs or weights if needed.
+
+
 
 ---
 
@@ -516,7 +554,7 @@ beetrap/
 
 **Built by passionate DeFi security researchers**
 
-*This project was built for ETH Global Bangkok 2024*
+*This project was built for ETH Global Hackmoney 2026*
 
 </div>
 
@@ -543,6 +581,6 @@ MIT License - see [LICENSE](LICENSE) for details
 
 *"The best defense against MEV is making it unprofitable."*
 
-**ETH Global Bangkok 2024**
+**ETH Global Hackmoney 2026**
 
 </div>
